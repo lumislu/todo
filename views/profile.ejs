@@ -43,9 +43,9 @@
           <% if (user.googleID){ %>
           <li>Google的ID為： <%= user.googleID %></li>
           <% } %>
-          <li>目前時間為：<%= new Date().toLocaleString('zh-TW') %></li>
+          <li>目前時間為：<%- new Date().toLocaleString()%></li>
           <li>
-            已註冊：<%= parseInt(Math.abs(user.date - new Date()) / 1000 / 60 /
+            已註冊：<%- parseInt(Math.abs(user.date - new Date()) / 1000 / 60 /
             60 / 24) %>天
           </li>
         </ul>
