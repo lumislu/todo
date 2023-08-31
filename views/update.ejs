@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include ("partials/header") %>
+    <title>updatePost</title>
+  </head>
+  <body>
+    <%- include ("partials/nav") %>
+    <main style="padding: 3rem">
+      <%- include ("partials/message") %>
+      <form action="/profile/post/<%- post._id %>?_method=PUT" method="POST">
+        <div class="form-group">
+          <label for="exampleforTitle">標題：</label>
+          <input
+            name="title"
+            type="text"
+            class="form-control"
+            id="exampleforTitle"
+            value="<%- post.title %>"
+          />
+        </div>
+        <br />
+        <div class="form-group">
+          <label for="exampleforContent">內容：</label>
+          <textarea
+            class="form-control"
+            id="exampleforContent"
+            aria-describedby="emailHelp"
+            name="content"
+          >
+<%- post.content %></textarea
+          >
+          <br />
+        </div>
+        <a href="/profile" class="btn btn-secondary">取消修改</a>
+        <button type="submit" class="btn btn-primary">確認修改</button>
+      </form>
+    </main>
+  </body>
+</html>

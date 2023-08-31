@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include ("partials/header") %>
+    <title>個人檔案頁面</title>
+    <style>
+      .posts {
+        padding: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+      }
+      section.user-info img {
+        border-radius: 50%;
+        display: inline-block;
+        padding: 1rem 0.5rem;
+      }
+      section.user-info h1 {
+        padding: 1rem 0.5rem;
+      }
+      .flex-container {
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include ("partials/nav") %>
+    <div
+      class="d-flex flex-column justify-content-center align-items-center gap-4"
+    >
+      <section class="user-info">
+        <div class="flex-container p-2">
+          <% if(user.thumbnail){ %>
+          <img src="<%= user.thumbnail %>" alt="個人圖片" />
+          <% } else { %>
+          <span class="bi bi-person-circle" style="font-size: 5rem"></span><% }
+          %>
+          <h1><%= user.name %>的個人檔案頁面</h1>
+        </div>
+        <ul>
+          <% if (user.googleID){ %>
+          <li>Google的ID為： <%= user.googleID %></li>
+          <% } %>
+          <li>目前時間為：<%= new Date().toLocaleString('zh-TW') %></li>
+          <li>
+            已註冊：<%= parseInt(Math.abs(user.date - new Date()) / 1000 / 60 /
+            60 / 24) %>天
+          </li>
+        </ul>
+      </section>
+      <div class="d-flex gap-2">
+        <a href="/profile/post" class="btn btn-primary">創建新留言</a>
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          刪除全部留言
+        </button>
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">刪除留言</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">確定要刪除所有留言嘛？</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  取消
+                </button>
+                <form
+                  action="/profile/post/<%- posts._id %>?_method=DELETE"
+                  method="POST"
+                >
+                  <button type="submit" class="btn btn-primary">
+                    確認刪除
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h1>留言板</h1>
+      <section class="posts border border-2">
+        <% posts.forEach(post => {%>
+        <div class="card" style="width: 18rem; margin: 1rem">
+          <div class="card-body">
+            <h5 class="card-title"><%= post.title %></h5>
+            <p class="card-text"><%- post.content %></p>
+            <p>建立時間：<%= post.date.toLocaleString() %></p>
+
+            <div class="d-flex gap-2">
+              <a href="/profile/post/<%- post._id %>" class="btn btn-primary">
+                <span class="bi bi-pencil-square">編輯</span>
+              </a>
+
+              <form
+                action="/profile/post/<%- post._id %>?_method=DELETE"
+                method="POST"
+              >
+                <button type="submit" class="btn btn-secondary">
+                  <span class="bi bi-trash">刪除</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </section>
+    </div>
+  </body>
+</html>
